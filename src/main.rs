@@ -164,7 +164,7 @@ mod tests {
     }
 
     #[actix_rt::test]
-    async fn test_put() {
+    async fn test_patch() {
         let mut store: HashMap<u32, Todo> = HashMap::new();
         store.insert(1, Todo { id: Option::Some(1), text: String::from("Eat Pizza"), status: Status::ACTIVE });
         let count: u32 = 1;
@@ -176,7 +176,7 @@ mod tests {
 
         let data = Todo {
             id: Option::Some(1),
-            text: String::from("Sleep"),
+            text: String::from("Eat Pizza"),
             status: Status::DONE,
         };
 
@@ -184,15 +184,42 @@ mod tests {
             App::new()
                 .app_data(app_state.clone())
                 .service(web::scope("/v1")
-                    .route("/todo-list", web::put().to(update_todo))
+                    .route("/todo-list/{id}", web::patch().to(update_todo))
                 )
         ).await;
 
-        let req = TestRequest::put().uri("/v1/todo-list").set_json(&data).to_request();
+        let req = TestRequest::patch().uri("/v1/todo-list/1").set_json(&data).to_request();
 
         let result: Vec<Todo> = test::read_response_json(&mut app, req).await;
 
         assert_eq!(data, result[0]);
         assert_eq!(data, app_state.todo_list.lock().unwrap().values().cloned().collect::<Vec<Todo>>()[0]);
+    }
+
+    #[actix_rt::test]
+    async fn test_delete() {
+        let mut store: HashMap<u32, Todo> = HashMap::new();
+        store.insert(1, Todo { id: Option::Some(1), text: String::from("Eat Pizza"), status: Status::ACTIVE });
+        let count: u32 = 1;
+
+        let app_state = web::Data::new(AppState {
+            todo_list: Mutex::new(store),
+            count: Mutex::new(count),
+        });
+
+        let mut app = test::init_service(
+            App::new()
+                .app_data(app_state.clone())
+                .service(web::scope("/v1")
+                    .route("/todo-list/{id}", web::delete().to(delete_todo))
+                )
+        ).await;
+
+        let req = TestRequest::delete().uri("/v1/todo-list/1").to_request();
+
+        let result: Vec<Todo> = test::read_response_json(&mut app, req).await;
+
+        assert_eq!(0, result.len());
+        assert_eq!(0, app_state.todo_list.lock().unwrap().values().cloned().collect::<Vec<Todo>>().len());
     }
 }
