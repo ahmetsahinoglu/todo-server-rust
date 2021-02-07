@@ -42,7 +42,8 @@ $ cargo test
 
 * Get TodoList http:127.0.0.1:{PORT}/v1/todo-list GET
 * Create Todo  http:127.0.0.1:{PORT}/v1/todo-list POST
-* Update Todo  http:127.0.0.1:{PORT}/v1/todo-list PUT
+* Update Todo  http:127.0.0.1:{PORT}/v1/todo-list/{id} PATCH
+* Delete Todo  http:127.0.0.1:{PORT}/v1/todo-list/{id} DELETE
 
 ###USAGE
 
@@ -63,13 +64,17 @@ curl --location --request POST 'http:127.0.0.1:8080/v1/todo-list' \
 
 #### Update Todo
 ```
-curl --location --request PUT 'localhost:8080/v1/todo-list' \
+curl --location --request PUT 'localhost:8080/v1/todo-list/1' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "id": 1,
     "text": "Pay rent.",
     "status": "DONE"
 }'
+```
+
+#### Delete Todo
+```
+curl --location --request DELETE 'localhost:8080/v1/todo-list/1'
 ```
 
 ## Sample Response
