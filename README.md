@@ -1,16 +1,14 @@
-# todo-list-server
+# todo-server-rust
 
-todo-list-server is a Rust(actix-web) application provides Rest APIs that uses create, update and delete operations.
-
-URL = https://todo-list-server-app-name-mqdvj5yr4a-uc.a.run.app/v1/todo-list
+todo-server-rust is a Rust(actix-web) application provides Rest APIs that uses create, update and delete operations.
 
 ## Installation
 1. Download and install **Rust** from [here](https://www.rust-lang.org/en-US/downloads.html)
 2. Download and install **Cargo** from [here](http://doc.crates.io/)
 
 ```bash 
-git clone https://github.com/ahmetsahinoglu/todo-list-server.git
-cd todo-list-server
+git clone https://github.com/ahmetsahinoglu/todo-server-rust.git
+cd todo-server-rust
 ```
 ##### Set your environment variable
 

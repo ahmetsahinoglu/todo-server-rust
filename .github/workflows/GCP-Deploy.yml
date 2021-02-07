@@ -30,16 +30,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build -t gcr.io/todo-list-server-sample/todo-list-server-app-name .
+        run: docker build -t gcr.io/todo-server-rust/todo-server-rust-app-name .
 
       - name: Test Docker image
-        run: docker run gcr.io/todo-list-server-sample/todo-list-server-app-name sh -c "cargo test"
+        run: docker run gcr.io/todo-server-rust/todo-server-rust-app-name sh -c "cargo test"
 
       - name: Push Docker image
-        run: docker push gcr.io/todo-list-server-sample/todo-list-server-app-name
+        run: docker push gcr.io/todo-server-rust/todo-server-rust-app-name
 
       - name: Set project
-        run: gcloud config set project todo-list-server-sample
+        run: gcloud config set project todo-server-rust
 
       - name: Deploy Docker image
-        run: gcloud run deploy todo-list-server-sample --image gcr.io/todo-list-server-sample/todo-list-server-app-name --region us-central1 --platform managed --allow-unauthenticated
+        run: gcloud run deploy todo-server-rust --image gcr.io/todo-server-rust/todo-server-rust-app-name --region us-central1 --platform managed --allow-unauthenticated
